@@ -433,6 +433,14 @@ ADD CONSTRAINT cc_lojas_longitude
 CHECK (longitude BETWEEN -180 AND 180);
 
 
+--Verifica se a coluna email da tabela clientes contém um @
+
+ALTER TABLE lojas.clientes
+ADD CONSTRAINT cc_clientes_email
+CHECK (email LIKE '%@%');
+
+
+
 
 
 
