@@ -4,9 +4,6 @@
 <h4>Pasta PSET1 </h4>
 <ul>
   <li>Contém o Script de criação do banco de dados</li>
-  <li>Contém o arquivo de exten</li>
-  <li></li>
-  <li></li>
-  
-
+  <li>Contém o arquivo de extensão architect</li>
+  <li>PDF do diagrama do banco de dados UVV</li>
 </ul>
