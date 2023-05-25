@@ -422,6 +422,16 @@ ADD CONSTRAINT cc_envios_status
 CHECK (status in ('CRIADO' , 'ENVIADO', 'TRANSITO', 'ENTREGUE'));
 
 
+--Restrição na Latitude e Longitude 
+
+ALTER TABLE lojas.lojas
+ADD CONSTRAINT cc_lojas_latitude
+CHECK (latitude BETWEEN -90 AND 90);
+
+ALTER TABLE lojas.lojas
+ADD CONSTRAINT cc_lojas_longitude
+CHECK (longitude BETWEEN -180 AND 180);
+
 
 
 
