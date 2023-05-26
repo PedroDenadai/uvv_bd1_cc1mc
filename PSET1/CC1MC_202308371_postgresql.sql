@@ -19,8 +19,6 @@ CREATE USER pedro_denadai WITH CREATEDB CREATEROLE ENCRYPTED PASSWORD 'senha01';
 
 SET ROLE pedro_denadai;
 
-
-
 -- Criar o Banco de Dados
 
 CREATE DATABASE uvv 
@@ -43,17 +41,28 @@ ALTER DATABASE uvv OWNER TO pedro_denadai;
 
 \c uvv pedro_denadai;
 
+--Deleta o schema lojas se existir
+
+DROP SCHEMA IF EXISTS lojas;
+
+
 -- Criar Schema (lojas) com autorizacao para o user pedro_denadai
 
-CREATE SCHEMA lojas AUTHORIZATION pedro_denadai;
+CREATE SCHEMA IF NOT EXISTS lojas AUTHORIZATION pedro_denadai;
 
---Mudar o search_path do user para o schema lojas
+ALTER DATABASE uvv SET search_path TO lojas, '$user', public;
 
 SET search_path TO lojas, '$user', public;
+
+--Comentário do Schema
+
+COMMENT ON SCHEMA lojas IS 'Esquema Lojas dentro do banco de dados UVV'
 
 --Alterando o search_path do user para o search_path lojas
 
 ALTER USER pedro_denadai SET search_path TO lojas, '$user', public;
+
+
 
 
 -- Alterar o Schema (lojas) para o usuário (pedro)
@@ -438,10 +447,6 @@ CHECK (longitude BETWEEN -180 AND 180);
 ALTER TABLE lojas.clientes
 ADD CONSTRAINT cc_clientes_email
 CHECK (email LIKE '%@%');
-
-
-
-
 
 
 
