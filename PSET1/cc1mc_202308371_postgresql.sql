@@ -1,3 +1,5 @@
+--------Deleta o DATABASE, USER (pedro_denadai) e a ROLE. Por preocação caso tenha algum banco de dados ja existente
+
 -- Verificar se o banco de dados (uvv) já existe e excluí-lo
 
 DROP DATABASE IF EXISTS uvv;
@@ -10,6 +12,11 @@ DROP ROLE IF EXISTS pedro_denadai;
 
 DROP USER IF EXISTS pedro_denadai;
 
+
+
+
+
+
 --Cria o usuário pedro_denadai
 --OBS: O CREATEDB permite ao user criar banco de dados , e o ENCRYPTED cria uma senha criptografada
 
@@ -19,7 +26,7 @@ CREATE USER pedro_denadai WITH CREATEDB CREATEROLE ENCRYPTED PASSWORD 'senha01';
 
 SET ROLE pedro_denadai;
 
--- Criar o Banco de Dados
+-- Criar o Banco de Dados uvv com todos os parâmetros que o PSET passou.
 
 CREATE DATABASE uvv 
     WITH OWNER        =         pedro_denadai
@@ -33,11 +40,11 @@ CREATE DATABASE uvv
 
 COMMENT ON DATABASE uvv IS 'Esse é um banco de dados do sistema de lojas da uvv, com um schema (lojas)';
 
---Altera o usuário para o user pedro_denadai
+--Altera o dono do banco de dados uvv para o user pedro_denadai, com isso o user terá permissões para criar tabelas e altera-las
 
 ALTER DATABASE uvv OWNER TO pedro_denadai;
 
--- Conectar ao banco de dados (uvv)
+-- Conectar ao banco de dados (uvv) com o user pedro_denadai
 
 \c uvv pedro_denadai;
 
@@ -45,12 +52,15 @@ ALTER DATABASE uvv OWNER TO pedro_denadai;
 
 DROP SCHEMA IF EXISTS lojas;
 
-
 -- Criar Schema (lojas) com autorizacao para o user pedro_denadai
 
 CREATE SCHEMA IF NOT EXISTS lojas AUTHORIZATION pedro_denadai;
 
+--Altera o search_path do database uvv para o lojas, $user e public
+
 ALTER DATABASE uvv SET search_path TO lojas, '$user', public;
+
+--Altera o search_path para que seja lojas, $user e public
 
 SET search_path TO lojas, '$user', public;
 
@@ -62,10 +72,7 @@ COMMENT ON SCHEMA lojas IS 'Esquema Lojas dentro do banco de dados UVV'
 
 ALTER USER pedro_denadai SET search_path TO lojas, '$user', public;
 
-
-
-
--- Alterar o Schema (lojas) para o usuário (pedro)
+-- Alterar o Schema (lojas) para o usuário (pedro_denadai)
 
 ALTER SCHEMA lojas OWNER TO pedro_denadai;
 
@@ -171,7 +178,7 @@ COMMENT ON COLUMN lojas.lojas.latitude IS                  'Latitude da localiza
 
 COMMENT ON COLUMN lojas.lojas.longitude IS                 'Longitude da localização da Loja';
 
-COMMENT ON COLUMN lojas.lojas.logo IS                      'Logo da Loja. ';
+COMMENT ON COLUMN lojas.lojas.logo IS                      'Logo da Loja.';
 
 COMMENT ON COLUMN lojas.lojas.logo_mime_type IS            'Logo MIME_TYPE da Loja';
 
@@ -241,7 +248,7 @@ PRIMARY KEY (cliente_id);
 
 --Comentario da tabela Clientes
 
-COMMENT ON TABLE lojas.clientes IS                     'Tabela de cadastro de Clientes, aonde a PK é a coluna cliente_id';
+COMMENT ON TABLE lojas.clientes IS                     'Tabela de cadastro de Clientes, com telefone, email, nome do cliente';
 
 --Comentario das colunas da tabela Clientes
 
@@ -282,7 +289,7 @@ PRIMARY KEY             (envio_id);
 
 --Comentario da tabela Envios
 
-COMMENT ON TABLE lojas.envios IS                       'Tabela de Envios dos pedidos';
+COMMENT ON TABLE lojas.envios IS                       'Tabela de Envios dos pedidos com o status, cliente, loja e endereço de entrega do envio';
 
 --Comentario das colunas da tabela Envios
 
@@ -323,7 +330,7 @@ PRIMARY KEY             (pedido_id);
 
 --Comentari da Tabela Pedidos
 
-COMMENT ON TABLE lojas.envios IS                   'Tabela de pedidos com os dados de Data e Hora, Status do pedido e as FKs da tabela Pedidos, Clientes e Lojas';
+COMMENT ON TABLE lojas.pedidos IS                   'Tabela de pedidos com os dados de Data e Hora, Status do pedido e as FKs da tabela Pedidos, Clientes e Lojas';
 
 --Comentarios das Colunas da tabela Pedidos
 
