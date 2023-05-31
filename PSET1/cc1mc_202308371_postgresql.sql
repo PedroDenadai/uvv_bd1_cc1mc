@@ -20,7 +20,7 @@ DROP USER IF EXISTS pedro_denadai;
 --Cria o usuário pedro_denadai
 --OBS: O CREATEDB permite ao user criar banco de dados , e o ENCRYPTED cria uma senha criptografada
 
-CREATE USER pedro_denadai WITH CREATEDB CREATEROLE ENCRYPTED PASSWORD 'senha01';
+CREATE USER pedro_denadai WITH CREATEDB CREATEROLE ENCRYPTED PASSWORD 'computacao@raiz';
 
 --Muda a ROLE para o user pedro_denadai
 
@@ -44,6 +44,9 @@ COMMENT ON DATABASE uvv IS 'Esse é um banco de dados do sistema de lojas da uvv
 
 ALTER DATABASE uvv OWNER TO pedro_denadai;
 
+
+\setenv PGPASSWORD computacao@raiz
+
 -- Conectar ao banco de dados (uvv) com o user pedro_denadai
 
 \c uvv pedro_denadai;
@@ -66,7 +69,7 @@ SET search_path TO lojas, '$user', public;
 
 --Comentário do Schema
 
-COMMENT ON SCHEMA lojas IS 'Esquema Lojas dentro do banco de dados UVV'
+COMMENT ON SCHEMA lojas IS 'Esquema Lojas dentro do banco de dados UVV';
 
 --Alterando o search_path do user para o search_path lojas
 
